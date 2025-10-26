@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group = 'ru.itis'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(22) }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    // Подтягиваем СРАЗУ весь web-набор Jakarta EE 10 (внутри есть и websocket-api)
+    implementation 'jakarta.platform:jakarta.jakartaee-web-api:10.0.0'
+
+    // Остальное как было
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+    implementation 'org.springframework:spring-jdbc:6.1.12'
+    implementation 'org.postgresql:postgresql:42.7.7'
+
+    compileOnly 'org.projectlombok:lombok:1.18.40'
+    annotationProcessor 'org.projectlombok:lombok:1.18.40'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test { useJUnitPlatform() }
