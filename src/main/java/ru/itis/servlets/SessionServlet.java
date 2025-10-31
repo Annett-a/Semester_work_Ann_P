@@ -15,7 +15,6 @@ public class SessionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String color = (String) session.getAttribute("color");
-
         req.setAttribute("color", color != null ? color : "orange");
         req.getRequestDispatcher("/jsp/session.jsp").forward(req, resp);
     }
@@ -23,10 +22,8 @@ public class SessionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String color = req.getParameter("color");
-
         HttpSession session = req.getSession(true);
         session.setAttribute("color", color);
-
         resp.sendRedirect("/session");
     }
 }

@@ -3,7 +3,6 @@ package ru.itis.repository.impl;
 import ru.itis.config.DatabaseConfig;
 import ru.itis.model.TagEntity;
 import ru.itis.repository.TagRepository;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -61,12 +60,10 @@ public class JdbcTagRepository implements TagRepository {
 
         try (Connection c = DatabaseConfig.openConnection()) {
             c.setAutoCommit(false);
-
             try (PreparedStatement d = c.prepareStatement(del)) {
                 d.setLong(1, listingId);
                 d.executeUpdate();
             }
-
             if (tagIds != null && !tagIds.isEmpty()) {
                 try (PreparedStatement i = c.prepareStatement(ins)) {
                     for (Long tagId : tagIds) {
@@ -77,7 +74,6 @@ public class JdbcTagRepository implements TagRepository {
                     i.executeBatch();
                 }
             }
-
             c.commit();
         } catch (Exception e) {
             throw new RuntimeException("replaceTags failed", e);

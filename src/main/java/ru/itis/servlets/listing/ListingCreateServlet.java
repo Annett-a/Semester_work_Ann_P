@@ -7,14 +7,13 @@ import jakarta.servlet.http.*;
 import ru.itis.model.ListingEntity;
 import ru.itis.service.ListingService;
 import ru.itis.service.PhotoService;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @WebServlet("/listings/create")
-@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 30 * 1024 * 1024) // 5MB/файл, до ~6 фото
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024, maxRequestSize = 30 * 1024 * 1024)
 public class ListingCreateServlet extends HttpServlet {
     private ListingService svc;
     private PhotoService photos;
@@ -37,8 +36,6 @@ public class ListingCreateServlet extends HttpServlet {
             return;
         }
         Long userId = (Long) s.getAttribute("userId");
-
-        // Собираем поля формы
         ListingEntity e = new ListingEntity();
         e.setTitle(req.getParameter("title"));
         e.setType(req.getParameter("type"));
@@ -46,13 +43,10 @@ public class ListingCreateServlet extends HttpServlet {
         e.setAuthorId(userId);
 
         List<Long> tagIds = parseTagIds(req.getParameterValues("tagIds"));
-
         Long id;
         try {
-            // 1) создаём объявление и получаем его id
             id = svc.create(e, tagIds);
         } catch (IllegalArgumentException ex) {
-            // Валидация: PRG назад на форму
             s.setAttribute("errors", Map.of("common", "Заполните поля корректно"));
             s.setAttribute("form", Map.of(
                     "title", e.getTitle(),
@@ -62,22 +56,16 @@ public class ListingCreateServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/listings/new");
             return;
         }
-
-        // 2) если в том же запросе пришли файлы — загрузим их
         var parts = req.getParts().stream()
                 .filter(p -> "photos".equals(p.getName()))
                 .collect(Collectors.toList());
-
         if (!parts.isEmpty()) {
             try {
                 photos.upload(id, userId, parts);
             } catch (Exception ex) {
-                // Не валим создание объявления из-за фото
                 s.setAttribute("errors", Map.of("flash", "Объявление создано, но фото не загрузились"));
             }
         }
-
-        // 3) PRG → карточка
         resp.sendRedirect(req.getContextPath() + "/listings/view?id=" + id);
     }
 

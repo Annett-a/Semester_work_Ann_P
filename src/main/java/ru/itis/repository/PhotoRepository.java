@@ -1,7 +1,6 @@
 package ru.itis.repository;
 
 import ru.itis.model.PhotoEntity;
-
 import java.util.List;
 import java.util.Optional;
 

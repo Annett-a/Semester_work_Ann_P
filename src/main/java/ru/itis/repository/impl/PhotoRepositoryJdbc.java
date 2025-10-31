@@ -3,14 +3,12 @@ package ru.itis.repository.impl;
 import ru.itis.config.DatabaseConfig;
 import ru.itis.model.PhotoEntity;
 import ru.itis.repository.PhotoRepository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class PhotoRepositoryJdbc implements PhotoRepository {
-
     private PhotoEntity map(ResultSet rs) throws SQLException {
         PhotoEntity p = new PhotoEntity();
         p.setId(rs.getLong("id"));

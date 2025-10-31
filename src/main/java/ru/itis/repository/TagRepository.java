@@ -1,7 +1,6 @@
 package ru.itis.repository;
 
 import ru.itis.model.TagEntity;
-
 import java.util.List;
 
 public interface TagRepository {

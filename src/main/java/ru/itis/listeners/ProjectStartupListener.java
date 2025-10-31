@@ -9,6 +9,10 @@ import ru.itis.service.*;
 import ru.itis.service.impl.*;
 import ru.itis.validation.AuthDataValidationService;
 import ru.itis.validation.ListingValidationService;
+import ru.itis.repository.ChatMessageRepository;
+import ru.itis.repository.impl.ChatMessageRepositoryJdbc;
+import ru.itis.service.RoomChatService;
+import ru.itis.service.impl.JdbcRoomChatService;
 
 @WebListener
 public class ProjectStartupListener implements ServletContextListener {
@@ -26,25 +30,22 @@ public class ProjectStartupListener implements ServletContextListener {
         AuthDataValidationService authValidator = new RegexpAuthDataValidationServiceImpl();
         ListingValidationService listingValidator = new ListingValidationServiceImpl();
 
-        // Services (бизнес-логика)
+        // Services
         AuthService authService = new AuthServiceImpl(userRepo, authValidator);
         ListingService listingService = new ListingServiceImpl(listingRepo, listingValidator, tagRepo);
         PhotoService photoService = new PhotoServiceImpl(photoRepo, listingRepo);
 
-        // NEW: чат по комнатам (listingId)
-        RoomChatService roomChatService = new InMemoryRoomChatService(50);
+        // Chat (listingId)
+        ChatMessageRepository chatRepo = new ChatMessageRepositoryJdbc();
+        RoomChatService roomChatService = new JdbcRoomChatService(chatRepo, 50);
 
-        // put into context
         ctx.setAttribute("userRepo", userRepo);
         ctx.setAttribute("listingRepo", listingRepo);
         ctx.setAttribute("tagRepo", tagRepo);
         ctx.setAttribute("photoRepo", photoRepo);
-
         ctx.setAttribute("authService", authService);
         ctx.setAttribute("listingService", listingService);
         ctx.setAttribute("photoService", photoService);
-
-        // NEW
         ctx.setAttribute("chatService", roomChatService);
     }
 }

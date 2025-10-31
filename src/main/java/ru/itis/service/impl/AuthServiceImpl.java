@@ -17,7 +17,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean authenticate(String email, String rawPassword) {
-        // валидацию на уровне сервиса можно упростить
         return users.findByEmail(email)
                 .map(u -> BCrypt.checkpw(rawPassword, u.getPassword()))
                 .orElse(false);
@@ -28,7 +27,6 @@ public class AuthServiceImpl implements AuthService {
         var errors = validator.validate(email, rawPassword);
         if (!errors.isEmpty()) throw new IllegalArgumentException("Invalid data: " + errors);
         if (users.existsByEmail(email)) throw new IllegalStateException("Email уже зарегистрирован");
-
         var u = new UserEntity();
         u.setEmail(email);
         u.setPassword(BCrypt.hashpw(rawPassword, BCrypt.gensalt()));

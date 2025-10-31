@@ -6,7 +6,6 @@ import jakarta.servlet.http.*;
 import ru.itis.config.FileStorageConfig;
 import ru.itis.model.PhotoEntity;
 import ru.itis.service.PhotoService;
-
 import java.io.*;
 
 @WebServlet("/photos")
@@ -23,14 +22,11 @@ public class PhotoContentServlet extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
         PhotoEntity p = svc.findById(id).orElse(null);
         if (p == null) { resp.sendError(404); return; }
-
         File file = new File(FileStorageConfig.baseDir(), p.getStoragePath().replace('/', File.separatorChar));
         if (!file.exists() || !file.isFile()) { resp.sendError(404); return; }
-
         resp.setContentType(p.getContentType() == null ? "application/octet-stream" : p.getContentType());
         resp.setHeader("Cache-Control", "max-age=31536000, public");
         resp.setContentLengthLong(file.length());
-
         try (InputStream in = new FileInputStream(file);
              OutputStream out = resp.getOutputStream()) {
             byte[] buf = new byte[8192];

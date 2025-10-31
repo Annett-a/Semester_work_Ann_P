@@ -1,13 +1,8 @@
 package ru.itis.servlets.listing;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 import ru.itis.service.ListingService;
-
 import java.io.IOException;
 
 @WebServlet("/listings/delete")
@@ -15,30 +10,51 @@ public class ListingDeleteServlet extends HttpServlet {
     private ListingService svc;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         this.svc = (ListingService) getServletContext().getAttribute("listingService");
-        if (this.svc == null) throw new ServletException("listingService is null");
+        if (svc == null) throw new IllegalStateException("listingService not found in context");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
         HttpSession s = req.getSession(false);
         if (s == null || s.getAttribute("userId") == null) {
             resp.sendRedirect(req.getContextPath() + "/sign-in");
             return;
         }
-
-        Long userId = (Long) s.getAttribute("userId");   // ← берём ID пользователя
-        Long id = Long.valueOf(req.getParameter("id"));
-
+        Long userId = (Long) s.getAttribute("userId");
+        Long id;
         try {
-            svc.deleteOwn(id, userId);                   // ← передаём userId, а не email
-            resp.sendRedirect(req.getContextPath() + "/listings/my");
+            id = Long.valueOf(req.getParameter("id"));
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Некорректный id");
+            return;
+        }
+        try {
+            svc.deleteOwn(id, userId);
         } catch (SecurityException se) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        String back = req.getParameter("back");
+        String ctx  = req.getContextPath();
+        if ("all".equals(back)) {
+            resp.sendRedirect(ctx + "/listings");
+        } else if ("my".equals(back)) {
+            resp.sendRedirect(ctx + "/listings/my");
+        } else {
+            String ref = req.getHeader("referer");
+            if (ref != null && (ref.contains("/listings"))) {
+                resp.sendRedirect(ref);
+            } else {
+                resp.sendRedirect(ctx + "/listings");
+            }
         }
     }
 }

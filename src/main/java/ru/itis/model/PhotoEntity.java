@@ -6,8 +6,8 @@ import lombok.Data;
 public class PhotoEntity {
     private Long id;
     private Long listingId;
-    private String fileName;     // исходное имя
-    private String storagePath;  // относительный путь от baseDir
+    private String fileName;
+    private String storagePath;
     private String contentType;
     private long size;
 }

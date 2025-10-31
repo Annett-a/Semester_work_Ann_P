@@ -6,6 +6,6 @@ import lombok.Data;
 public class UserEntity {
     private Long id;
     private String email;
-    private String password; // хранится хэш
+    private String password;
     private String fullName;
 }

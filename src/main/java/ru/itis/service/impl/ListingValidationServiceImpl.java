@@ -2,7 +2,6 @@ package ru.itis.service.impl;
 
 import ru.itis.model.ListingEntity;
 import ru.itis.validation.ListingValidationService;
-
 import java.util.HashMap;
 import java.util.Map;
 

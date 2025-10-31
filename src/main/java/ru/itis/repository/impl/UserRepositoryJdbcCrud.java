@@ -3,7 +3,6 @@ package ru.itis.repository.impl;
 import ru.itis.config.DatabaseConfig;
 import ru.itis.model.UserEntity;
 import ru.itis.repository.UserRepository;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +15,6 @@ public class UserRepositoryJdbcCrud implements UserRepository {
         String sql = "select id, email, password, full_name from users where email=?";
         try (Connection c = DatabaseConfig.openConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) return Optional.empty();
@@ -27,7 +25,6 @@ public class UserRepositoryJdbcCrud implements UserRepository {
                 u.setFullName(rs.getString("full_name"));
                 return Optional.of(u);
             }
-
         } catch (Exception e) {
             throw new RuntimeException("findByEmail failed", e);
         }
@@ -38,12 +35,10 @@ public class UserRepositoryJdbcCrud implements UserRepository {
         String sql = "select 1 from users where email=? limit 1";
         try (Connection c = DatabaseConfig.openConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
-
         } catch (Exception e) {
             throw new RuntimeException("existsByEmail failed", e);
         }
@@ -54,12 +49,10 @@ public class UserRepositoryJdbcCrud implements UserRepository {
         String sql = "insert into users(email,password,full_name) values(?,?,?)";
         try (Connection c = DatabaseConfig.openConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
-
             ps.setString(1, u.getEmail());
             ps.setString(2, u.getPassword());
             ps.setString(3, u.getFullName());
             ps.executeUpdate();
-
         } catch (Exception e) {
             throw new RuntimeException("create user failed", e);
         }

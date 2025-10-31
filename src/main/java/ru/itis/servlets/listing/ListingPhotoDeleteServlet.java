@@ -8,7 +8,9 @@ import ru.itis.service.PhotoService;
 public class ListingPhotoDeleteServlet extends HttpServlet {
     private PhotoService photos;
 
-    @Override public void init() { this.photos = (PhotoService) getServletContext().getAttribute("photoService"); }
+    @Override public void init() {
+        this.photos = (PhotoService) getServletContext().getAttribute("photoService");
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws java.io.IOException {

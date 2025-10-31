@@ -1,14 +1,12 @@
 package ru.itis.service.impl;
 
 import ru.itis.service.RoomChatService;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryRoomChatService implements RoomChatService {
     private final int cap;
     private final Map<Long, Deque<String>> rooms = new ConcurrentHashMap<>();
-
     public InMemoryRoomChatService(int capacity) {
         this.cap = Math.max(1, capacity);
     }

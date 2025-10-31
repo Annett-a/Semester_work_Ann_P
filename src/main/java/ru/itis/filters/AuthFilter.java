@@ -4,25 +4,20 @@ import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/profile", "/listings/*", "/chat", "/ws/chat"})
+@WebFilter({"/profile", "/listings/*", "/chat"})
 public class AuthFilter implements Filter {
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse resp = (HttpServletResponse) response;
-
-        HttpSession session = req.getSession(false);
-        boolean loggedIn = session != null && session.getAttribute("email") != null;
-
+        var r = (HttpServletRequest) req;
+        var s = r.getSession(false);
+        boolean loggedIn = s != null && s.getAttribute("userId") != null;
         if (loggedIn) {
-            chain.doFilter(request, response);
+            chain.doFilter(req, resp);
         } else {
-            resp.sendRedirect(req.getContextPath() + "/sign-in");
+            ((HttpServletResponse) resp).sendRedirect(r.getContextPath() + "/sign-in");
         }
     }
 }

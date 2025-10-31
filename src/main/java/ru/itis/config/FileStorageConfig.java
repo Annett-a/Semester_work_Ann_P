@@ -17,7 +17,6 @@ public final class FileStorageConfig {
     }
 
     private FileStorageConfig() {}
-
     public static File baseDir() {
         return BASE_DIR;
     }

@@ -1,7 +1,6 @@
 package ru.itis.servlets;
 
 import ru.itis.util.CookieSearchUtil;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
@@ -18,7 +17,6 @@ public class CookieServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Optional<String> optionalColor = CookieSearchUtil
                 .findCookieByName(req.getCookies(), "color");
-
         req.setAttribute("color", optionalColor.orElse("green"));
         req.getRequestDispatcher("/jsp/cookie.jsp").forward(req, resp);
     }

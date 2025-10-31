@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import ru.itis.repository.TagRepository;
-
 import java.io.IOException;
 
 @WebServlet("/listings/new")

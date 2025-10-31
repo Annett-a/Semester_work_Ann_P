@@ -1,7 +1,6 @@
 package ru.itis.service.impl;
 
 import ru.itis.service.PasswordEncoder;
-
 import java.util.Objects;
 
 public class SimpleHashPasswordEncoder implements PasswordEncoder {

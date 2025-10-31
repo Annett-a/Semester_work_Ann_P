@@ -10,9 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FieldErrorDto {
-
     private String field;
-
     private String message;
 
 }

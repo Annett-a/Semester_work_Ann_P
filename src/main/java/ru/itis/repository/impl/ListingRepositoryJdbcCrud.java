@@ -3,14 +3,12 @@ package ru.itis.repository.impl;
 import ru.itis.config.DatabaseConfig;
 import ru.itis.model.ListingEntity;
 import ru.itis.repository.ListingRepository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ListingRepositoryJdbcCrud implements ListingRepository {
-
     private ListingEntity map(ResultSet rs) throws SQLException {
         ListingEntity e = new ListingEntity();
         e.setId(rs.getLong("id"));

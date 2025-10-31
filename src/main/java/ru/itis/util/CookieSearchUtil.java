@@ -1,7 +1,6 @@
 package ru.itis.util;
 
 import lombok.experimental.UtilityClass;
-
 import jakarta.servlet.http.Cookie;
 import java.util.Objects;
 import java.util.Optional;

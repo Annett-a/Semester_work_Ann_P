@@ -1,23 +1,22 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Fedor
-  Date: 04.10.2025
-  Time: 9:29
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
+<link rel="stylesheet" href="${ctx}/assets/css/app.css"/>
+<script src="${ctx}/assets/js/app.js" defer></script>
+
 <html>
-<head>
-    <title>Title</title>
-</head>
+<head><title>Session demo</title></head>
 <body>
+<main class="container">
+    <h1><span style="color: ${requestScope.color}">Session example</span></h1>
 
-    <h1><span style="color: <%= request.getAttribute("color")%>">Session example</span></h1>
-
-    <form action="/session" method="post">
+    <form class="form card mt-2" action="/session" method="post">
+        <label>Цвет</label>
         <input type="text" name="color"/>
-        <input type="submit" value="Save">
+        <div class="actions">
+            <input class="btn primary" type="submit" value="Save">
+        </div>
     </form>
-
+</main>
 </body>
 </html>

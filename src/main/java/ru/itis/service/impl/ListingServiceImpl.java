@@ -5,7 +5,6 @@ import ru.itis.repository.ListingRepository;
 import ru.itis.repository.TagRepository;
 import ru.itis.service.ListingService;
 import ru.itis.validation.ListingValidationService;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ public class ListingServiceImpl implements ListingService {
     private final ListingRepository repo;
     private final ListingValidationService validator;
     private final TagRepository tagRepo;
-
     public ListingServiceImpl(ListingRepository repo,
                               ListingValidationService validator,
                               TagRepository tagRepo) {
@@ -22,9 +20,17 @@ public class ListingServiceImpl implements ListingService {
         this.tagRepo = tagRepo;
     }
 
-    @Override public List<ListingEntity> all() { return repo.findAll(); }
-    @Override public List<ListingEntity> byAuthorId(Long userId) { return repo.findAllByAuthorId(userId); }
-    @Override public Optional<ListingEntity> byId(Long id) { return repo.findById(id); }
+    @Override public List<ListingEntity> all() {
+        return repo.findAll();
+
+    }
+    @Override public List<ListingEntity> byAuthorId(Long userId) {
+        return repo.findAllByAuthorId(userId);
+
+    }
+    @Override public Optional<ListingEntity> byId(Long id) {
+        return repo.findById(id);
+    }
 
     @Override
     public Long create(ListingEntity e, List<Long> tagIds) {

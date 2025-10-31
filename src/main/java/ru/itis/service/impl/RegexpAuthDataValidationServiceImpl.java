@@ -1,7 +1,6 @@
 package ru.itis.service.impl;
 
 import ru.itis.validation.AuthDataValidationService;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -6,7 +6,6 @@ import jakarta.servlet.http.*;
 import ru.itis.repository.PhotoRepository;
 import ru.itis.repository.TagRepository;
 import ru.itis.service.ListingService;
-
 import java.io.IOException;
 
 @WebServlet("/listings/view")
@@ -28,13 +27,9 @@ public class ListingShowServlet extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
         var it = svc.byId(id).orElse(null);
         if (it == null) { resp.sendError(HttpServletResponse.SC_NOT_FOUND); return; }
-
         req.setAttribute("it", it);
         req.setAttribute("tags", tagRepo.findByListingId(id));
-
-        // ФОТО — для карусели
         req.setAttribute("photos", photoRepo.findByListingId(id));
-
         req.getRequestDispatcher("/jsp/listing-show.jsp").forward(req, resp);
     }
 }
